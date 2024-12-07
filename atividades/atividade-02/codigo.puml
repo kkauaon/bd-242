@@ -1,0 +1,117 @@
+@startuml
+entity "TB_TIPOS_MIDIA" {
+*id : INTEGER
+--
+Name : NVARCHAR(120)
+}
+
+entity "TB_GENEROS" {
+*id : INTEGER
+--
+Name : NVARCHAR(120)
+}
+
+entity "TB_PLAYLISTS" {
+*id : INTEGER
+--
+Name : NVARCHAR(120)
+}
+
+entity "TB_MUSICAS_PLAYLIST" {
+*Playlist_Id : INTEGER <<FK>>
+*Musica_Id: INTEGER <<FK>>
+--
+}
+
+entity "TB_MUSICAS" {
+*id : INTEGER
+--
+Name : NVARCHAR(200)
+Album_Id : INTEGER <<FK>>
+Tipo_Midia_Id : INTEGER <<FK>>
+Genero_Id : INTEGER <<FK>>
+Composer : NVARCHAR(220)
+Milliseconds : INTEGER
+Bytes : INTEGER
+UnitPrice : NUMERIC
+}
+
+entity "TB_ARTISTAS" {
+*id : INTEGER
+--
+Name : NVARCHAR(120)
+}
+
+entity "TB_FATURAS" {
+*id : INTEGER
+--
+Cliente_Id : INTEGER <<FK>>
+InvoiceDate : DATETIME
+BillingAddress : NVARCHAR(70)
+BillingCity : NVARCHAR(40)
+}
+
+entity "TB_ITENS_FATURA" {
+*id : INTEGER
+--
+Fatura_Id : INTEGER <<FK>>
+Musica_Id : INTEGER <<FK>>
+UnitPrice : NUMERIC
+Quantity : INTEGER
+}
+
+entity "TB_ALBUNS" {
+*id : INTEGER
+--
+Title : NVARCHAR(160)
+Artista_Id : INTEGER <<FK>>
+}
+
+entity "TB_CLIENTES" {
+*id : INTEGER
+--
+FirstName : NVARCHAR(40)
+LastName : NVARCHAR(20)
+Company : NVARCHAR(80)
+Address : NVARCHAR(70)
+City : NVARCHAR(40)
+State : NVARCHAR(40)
+Country : NVARCHAR(40)
+PostalCode : NVARCHAR(10)
+Phone : NVARCHAR(24)
+Fax : NVARCHAR(24)
+Email : NVARCHAR(60)
+Suporte_Empregado_Id : INTEGER <<FK>>
+}
+
+entity "TB_EMPREGADOS" {
+*id : INTEGER
+--
+LastName : NVARCHAR(20)
+FirstName : NVARCHAR(20)
+Title : NVARCHAR(30)
+Reporte_Empregado_Id : INTEGER <<FK>>
+BirthDate : DATETIME
+HireDate : DATETIME
+Address : NVARCHAR(70)
+}
+
+TB_TIPOS_MIDIA ||--o{ TB_MUSICAS
+TB_GENEROS |o--o{ TB_MUSICAS
+
+TB_PLAYLISTS ||--o| TB_MUSICAS_PLAYLIST
+TB_MUSICAS ||--o| TB_MUSICAS_PLAYLIST
+
+TB_ARTISTAS ||--o{ TB_ALBUNS
+TB_MUSICAS }o--o| TB_ALBUNS
+
+TB_MUSICAS ||--o{ TB_ITENS_FATURA
+TB_FATURAS ||--o{ TB_ITENS_FATURA
+
+TB_FATURAS }o--|| TB_CLIENTES
+TB_EMPREGADOS |o--o{ TB_CLIENTES
+
+TB_EMPREGADOS |o--o{ TB_EMPREGADOS
+
+skinparam linetype ortho
+@enduml
